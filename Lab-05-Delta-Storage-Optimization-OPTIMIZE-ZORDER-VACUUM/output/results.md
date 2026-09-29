@@ -40,7 +40,7 @@ The guide's parallel-delete setting was attempted:
 
 `SET spark.databricks.delta.vacuum.parallelDelete.enabled = true;`
 
-The Databricks Free Serverless environment returned `CONFIG_NOT_AVAILABLE_WITHOUT_SUGGESTION`. This is documented as an environment limitation.
+The Databricks Free Serverless environment returned `CONFIG_NOT_AVAILABLE_WITHOUT_SUGGESTION` when the configuration was checked from Python. This confirms that the setting is unavailable on the current compute environment. The guide's configuration was therefore tested and documented rather than omitted.
 
 ## VACUUM
 
@@ -59,3 +59,23 @@ The final query returned:
 - `max_customer_id`: 210
 
 Therefore, the Lab 5 optimization workflow was completed successfully.
+
+
+## Environment-Limitation Evidence
+
+The configuration check was executed with:
+
+```python
+spark.conf.get(
+    "spark.databricks.delta.vacuum.parallelDelete.enabled",
+    "NOT_AVAILABLE"
+)
+```
+
+Databricks returned:
+
+`[CONFIG_NOT_AVAILABLE_WITHOUT_SUGGESTION]`
+
+Therefore, the parallel-delete configuration is unavailable on the current Free Serverless environment. This does not prevent the required `VACUUM` operation from completing successfully.
+
+Evidence: `screenshots/13_parallel_delete_unsupported.png`

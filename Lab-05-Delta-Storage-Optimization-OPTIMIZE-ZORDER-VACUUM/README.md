@@ -10,7 +10,7 @@ Prevent small-file problems by compacting Delta files with `OPTIMIZE`, applying 
 2. Performed 10 individual micro-appends to simulate small-file fragmentation.
 3. Ran:
    `OPTIMIZE lab_db.customers ZORDER BY (customer_id, signup_date);`
-4. Attempted the guide's parallel-delete configuration. The Databricks Free Serverless environment does not expose this configuration, so it was not used.
+4. Tested the guide's parallel-delete configuration. The Databricks Free Serverless environment returned `CONFIG_NOT_AVAILABLE_WITHOUT_SUGGESTION`, so the configuration is unavailable and was not used.
 5. Ran:
    `VACUUM lab_db.customers RETAIN 168 HOURS;`
 6. Verified the final table.
@@ -26,7 +26,7 @@ Prevent small-file problems by compacting Delta files with `OPTIMIZE`, applying 
 
 ## Environment Note
 
-The practice guide specifies `spark.databricks.delta.vacuum.parallelDelete.enabled = true`, but the Free Serverless environment returned `CONFIG_NOT_AVAILABLE_WITHOUT_SUGGESTION`. The actual `VACUUM` command still executed successfully.
+The practice guide specifies `spark.databricks.delta.vacuum.parallelDelete.enabled = true`. A Python configuration check returned `CONFIG_NOT_AVAILABLE_WITHOUT_SUGGESTION`, confirming that this configuration is unavailable on the current Free Serverless compute. The actual `VACUUM` command still executed successfully. Screenshot `13_parallel_delete_unsupported.png` records this evidence.
 
 ## Folder Structure
 
