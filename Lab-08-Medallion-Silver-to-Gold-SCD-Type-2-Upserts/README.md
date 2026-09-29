@@ -1,72 +1,47 @@
-# Databricks Lab 8 – Medallion Silver to Gold & SCD Type 2
+# Databricks Lab 8 — Medallion Silver to Gold & SCD Type 2
+
+## Overview
+Completed Gold-layer and SCD Type 2 lab using the Silver data produced by Lab 7.
 
 ## Objective
-Build a curated Gold daily-revenue table and implement Slowly Changing Dimension (SCD) Type 2 history tracking using Delta Lake.
+- Build a Gold daily-revenue table.
+- Implement customer history tracking.
+- Use Delta MERGE logic for SCD Type 2.
+- Verify current and historical records.
 
 ## Environment
-- Databricks Free Edition / Serverless
-- Catalog: `workspace`
-- Schema: `lab_db`
-- Silver: `workspace.lab_db.silver_orders`
-- Gold revenue: `workspace.lab_db.gold_daily_revenue`
-- Gold customer dimension: `workspace.lab_db.gold_dim_customers`
+- Catalog: workspace
+- Schema: lab_db
+- Silver: workspace.lab_db.silver_orders
+- Gold revenue: workspace.lab_db.gold_daily_revenue
+- Gold dimension: workspace.lab_db.gold_dim_customers
 
-## Part 1 – Silver Verification
-The Lab 7 Silver table was verified before starting Lab 8:
-- 513 rows
-- 513 distinct order IDs
-- Minimum order ID: 1001
-- Maximum order ID: 3012
-
-## Part 2 – Gold Daily Revenue
-Created `workspace.lab_db.gold_daily_revenue` from Silver using:
-- `DATE(order_ts)` as `revenue_date`
-- `customer_id`
-- `SUM(amount_num)` as `total_revenue`
+## Gold Revenue
+The daily-revenue table uses DATE(order_ts), customer_id, and SUM(amount_num) as total_revenue.
 
 Verification:
 - Gold rows: 142
 - Customers: 21
 - Overall revenue: 368023
 
-## Part 3 – SCD Type 2
-Created the initial `gold_dim_customers` table with:
-- `customer_id`
-- `name`
-- `email`
-- `effective_date`
-- `end_date`
-- `is_current`
+## SCD Type 2
+The customer dimension tracks customer_id, name, email, effective_date, end_date, and is_current.
 
-Initial state:
-- 13 total records
-- 13 current records
-- 0 historical records
+Customer 102, Bob Jones, was updated from bob_new@example.com to bob_updated@example.com.
 
-A staging update was then created for customer 102 (Bob Jones):
-- Old email: `bob_new@example.com`
-- New email: `bob_updated@example.com`
+## MERGE Verification Note
+The supplied guide MERGE pattern contains a NULL merge-key branch. During execution this produced an unintended NULL-key test record. That artifact was removed, and the intended new Bob version was explicitly inserted with customer_id 102.
 
-The guide's MERGE pattern expired the existing current record. During verification, its `NULL` merge-key branch produced an incorrect NULL-key record, so that test artifact was removed and the new current Bob version was explicitly inserted with customer_id 102. This preserves the intended SCD Type 2 result described by the guide.
+## Final SCD Result
+- Total records: 14
+- Unique customers: 13
+- Current records: 13
+- Historical records: 1
 
-Final SCD state:
-- 14 total records
-- 13 unique customers
-- 13 current records
-- 1 historical record
+Bob's old email is historical and the new email is current.
 
-Bob has two versions:
-- `bob_new@example.com` → historical, `is_current = false`
-- `bob_updated@example.com` → current, `is_current = true`
+## Evidence
+Screenshots cover Silver verification, Gold creation, aggregation results, source data, initial SCD state, staging update, MERGE result, Bob history, and final verification.
 
-## Screenshot Evidence
-1. Silver verification
-2. Gold table creation
-3. Gold aggregation verification
-4. Customer source verification
-5. Initial SCD dimension
-6. Initial SCD verification
-7. Staging update
-8. SCD MERGE result
-9. Bob SCD history
-10. Final SCD verification
+## Learning Outcome
+Lab 8 demonstrates how cleaned Silver data becomes business-oriented Gold data and how SCD Type 2 preserves historical customer changes.
