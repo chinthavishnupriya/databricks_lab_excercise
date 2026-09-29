@@ -1,54 +1,44 @@
 # Databricks Lab 1 — Relational Entities & SQL DDL/DML
 
-## Lab status
-**Completed**
+## Overview
+Completed Databricks SQL lab covering schema creation, Delta table creation, data insertion, verification, and MERGE-based upsert behavior.
 
 ## Objective
-Create and manage a Databricks schema and Delta customer table, then perform SQL DML including `INSERT` and `MERGE INTO`.
+Build the relational foundation used by the later Delta Lake labs:
+- Create the lab_db schema.
+- Create the customers Delta table.
+- Inspect the table structure.
+- Insert customer records.
+- Use MERGE INTO to update an existing customer.
+- Verify the final state.
 
 ## Environment
-- Platform: Databricks Free Edition
-- Interface: Databricks SQL Editor
-- Warehouse: SQL Warehouse selected in the SQL Editor
-- Storage format: Delta
+- Databricks Free Edition
+- Databricks SQL Editor
+- SQL Warehouse
+- Schema: lab_db
+- Table: customers
+- Storage: Delta
 
-## Lab workflow
-1. Create `lab_db` schema.
-2. Select `lab_db`.
-3. Create `customers` as a Delta table.
-4. Verify the schema with `DESCRIBE customers`.
-5. Verify the empty table.
-6. Insert Alice and Bob.
-7. Verify the inserted records.
-8. Run `MERGE INTO` to update Bob.
-9. Run the final verification query.
+## Execution Flow
+Create schema → create Delta table → verify schema → insert Alice and Bob → verify rows → execute MERGE → verify final output.
 
-## Final table
-| customer_id | name | email | signup_date | status |
-|---:|---|---|---|---|
-| 101 | Alice Smith | alice@example.com | 2024-01-15 | Active |
-| 102 | Bob Jones | bob_new@example.com | 2024-02-01 | Active |
+## Final Result
+| customer_id | name | email | status |
+|---:|---|---|---|
+| 101 | Alice Smith | alice@example.com | Active |
+| 102 | Bob Jones | bob_new@example.com | Active |
 
-## Repository contents
-```text
-Lab-01-Databricks-Relational-Entities-SQL-DDL-DML/
-├── README.md
-├── queries/
-│   └── lab1.sql
-├── input/
-│   └── commands.md
-├── output/
-│   └── results.md
-└── screenshots/
-    ├── 01_schema_created.png
-    ├── 02_table_structure.png
-    ├── 03_initial_table_empty.png
-    ├── 04_merge_execution.png
-    └── 05_final_customer_output.png
-```
+Bob's email and status were successfully changed through MERGE INTO.
 
 ## Evidence
-The screenshots document schema creation, table structure, initial empty state, MERGE execution, and final customer output.
+The screenshots cover schema creation, table structure, empty-table verification, MERGE execution, and final customer output.
 
-## Notes
-The lab guide's implementation explicitly demonstrates `INSERT` and `MERGE INTO`. Separate `UPDATE` and `DELETE` commands are mentioned in the hands-on description but are not supplied as separate code examples in the guide, so they are not added to this lab folder.
+## Repository Contents
+queries/lab1.sql, input/commands.md, output/results.md, and the screenshots folder contain the execution material.
+
+## Scope Note
+The Practice Guide mentions INSERT, UPDATE, DELETE, and MERGE. The supplied executable example specifically demonstrates INSERT and MERGE, so this README documents only the operations actually evidenced in the lab.
+
+## Learning Outcome
+This lab establishes the SQL and Delta-table foundation for the remaining nine labs.
