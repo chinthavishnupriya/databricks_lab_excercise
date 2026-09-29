@@ -1,43 +1,31 @@
-# Lab 5: Delta Storage Optimization – OPTIMIZE, Z-ORDER, & VACUUM
+# Databricks Lab 5 — Delta Storage Optimization with OPTIMIZE, Z-ORDER & VACUUM
+
+## Overview
+Completed Delta storage-maintenance lab using repeated small writes, OPTIMIZE, Z-ORDER, and VACUUM.
 
 ## Objective
-
-Prevent small-file problems by compacting Delta files with `OPTIMIZE`, applying multi-dimensional clustering with `ZORDER BY`, and cleaning up unreferenced historical files with `VACUUM`.
+- Simulate small-file fragmentation.
+- Compact Delta files with OPTIMIZE.
+- Apply Z-ORDER using customer_id and signup_date.
+- Remove obsolete files with VACUUM.
+- Record environment-specific configuration limits.
 
 ## Execution
-
-1. Verified the existing `lab_db.customers` Delta table.
-2. Performed 10 individual micro-appends to simulate small-file fragmentation.
-3. Ran:
-   `OPTIMIZE lab_db.customers ZORDER BY (customer_id, signup_date);`
-4. Tested the guide's parallel-delete configuration. The Databricks Free Serverless environment returned `CONFIG_NOT_AVAILABLE_WITHOUT_SUGGESTION`, so the configuration is unavailable and was not used.
-5. Ran:
-   `VACUUM lab_db.customers RETAIN 168 HOURS;`
-6. Verified the final table.
+Ten individual micro-appends were performed against lab_db.customers. The table was then optimized with Z-ORDER and cleaned with VACUUM RETAIN 168 HOURS.
 
 ## Results
+- Micro-appends: 10
+- Files removed by OPTIMIZE: 13
+- Optimized files added: 1
+- Final row count: 13
+- Customer ID range: 101–210
+- VACUUM: successful
 
-- 10 micro-appends completed.
-- OPTIMIZE + ZORDER completed successfully.
-- 13 files were removed and 1 optimized file was added.
-- VACUUM completed successfully.
-- Final row count: 13.
-- Customer ID range: 101–210.
+## Environment Limitation
+The guide specifies spark.databricks.delta.vacuum.parallelDelete.enabled = true. The Free Serverless environment returned CONFIG_NOT_AVAILABLE_WITHOUT_SUGGESTION for this setting, so it was not used. Normal VACUUM still completed successfully.
 
-## Environment Note
+## Evidence
+The screenshots document the micro-appends, optimization, Z-ORDER, unsupported configuration, VACUUM, and final verification.
 
-The practice guide specifies `spark.databricks.delta.vacuum.parallelDelete.enabled = true`. A Python configuration check returned `CONFIG_NOT_AVAILABLE_WITHOUT_SUGGESTION`, confirming that this configuration is unavailable on the current Free Serverless compute. The actual `VACUUM` command still executed successfully. Screenshot `13_parallel_delete_unsupported.png` records this evidence.
-
-## Folder Structure
-
-```text
-Lab-05-Delta-Storage-Optimization-OPTIMIZE-ZORDER-VACUUM/
-├── README.md
-├── input/
-│   └── lab5_input.md
-├── queries/
-│   └── lab5.sql
-├── output/
-│   └── results.md
-└── screenshots/
-```
+## Learning Outcome
+This lab demonstrates practical Delta maintenance after repeated writes and shows how platform capabilities can differ between environments.
