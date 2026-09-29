@@ -15,3 +15,6 @@
 
 ## Conclusion
 The Bronze-to-Silver streaming pipeline successfully applied the 10-minute watermark, removed 12 duplicate events, filtered 5 invalid records, and produced 513 clean Silver records.
+
+## Evidence
+The `screenshots` directory contains 10 execution and verification screenshots covering the Bronze setup, test data, streaming transformation, checkpoint handling, Silver write, and final data-quality checks.

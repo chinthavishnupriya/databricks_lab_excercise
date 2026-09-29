@@ -40,3 +40,15 @@ The guide's `/tmp/checkpoints/...` path failed because public DBFS is disabled i
 - Maximum order ID: **3012**
 
 Therefore, the pipeline removed 12 duplicate events and filtered 5 invalid records successfully.
+
+## Screenshot Evidence
+1. Bronze initial verification
+2. Bronze schema
+3. Test data creation
+4. Bronze prepared test state
+5. Silver streaming transformation
+6. Checkpoint environment
+7. Silver stream success
+8. Silver row-count verification
+9. Silver data-quality verification
+10. Final Silver verification
