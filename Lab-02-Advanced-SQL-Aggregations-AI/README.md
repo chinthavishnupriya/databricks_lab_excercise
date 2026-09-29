@@ -1,53 +1,42 @@
-# Lab 2 — Advanced SQL Querying, Aggregations & AI Functions
+# Databricks Lab 2 — Advanced SQL Querying, Aggregations & AI Functions
+
+## Overview
+Completed advanced SQL lab using grouped aggregations, window functions, and Databricks AI sentiment analysis.
 
 ## Objective
-
-Practice advanced SQL querying in Databricks using aggregations, window functions, and a Databricks built-in AI sentiment function.
+Practice:
+- GROUP BY aggregation.
+- COUNT and AVG.
+- DENSE_RANK window functions.
+- AI sentiment analysis with ai_analyze_sentiment.
+- Combining analytical SQL and AI output.
 
 ## Environment
-
+- Databricks Free Edition
 - Databricks SQL Editor
 - SQL Warehouse
-- Database: `lab_db`
-- Table: `review_logs`
-- Delta/Databricks SQL table
+- Schema: lab_db
+- Table: review_logs
 
-## Tasks completed
+## Execution Flow
+Create review_logs → insert source data → verify records → calculate rating aggregates → rank reviews with DENSE_RANK → analyze sentiment → combine results.
 
-1. Switched to `lab_db`.
-2. Created the `review_logs` table.
-3. Verified the table schema.
-4. Inserted review data.
-5. Verified all input rows.
-6. Performed `GROUP BY`, `COUNT`, and `AVG` aggregation.
-7. Applied `DENSE_RANK()` over review ratings.
-8. Applied `ai_analyze_sentiment(review_text)`.
-9. Combined ranking and sentiment analysis in the final query.
+## Data
+The Practice Guide supplied two original review records. Six additional practice records were added during execution so that the analytical queries produced a more useful multi-row result.
 
-## Source data vs additional practice
-
-The practice guide provides two original review records. This lab execution uses those two records plus six additional practice records so that the aggregation, ranking, and sentiment analysis produce a more useful multi-row result set.
-
-## Folder structure
-
-```text
-Lab-02-Advanced-SQL-Aggregations-AI/
-├── README.md
-├── queries/
-│   └── lab2.sql
-├── input/
-│   └── review_data.sql
-├── output/
-│   └── results.md
-└── screenshots/
-    ├── 01_use_lab_db.png
-    ├── 02_table_structure.png
-    ├── 03_review_input_data.png
-    ├── 04_rating_aggregation.png
-    ├── 05_dense_rank.png
-    └── 06_final_analysis.png
-```
+Final analysis: 8 rows.
 
 ## Result
+The final query successfully returned review data together with rating rank and sentiment category.
 
-Lab 2 was executed successfully in Databricks SQL Editor. The final analysis returned 8 rows with rating rank and sentiment category.
+## Evidence
+Screenshots cover schema selection, table structure, review data, aggregation, DENSE_RANK, and the final analysis.
+
+## Repository Contents
+queries/lab2.sql, input/review_data.sql, output/results.md, and screenshots preserve the work.
+
+## Learning Outcome
+This lab demonstrates the transition from basic SQL operations to analytical workloads that combine aggregation, ranking, and AI-assisted text analysis.
+
+## Scope Note
+The guide objective also mentions text summarization. The repository evidence specifically covers sentiment analysis; no separate summarization execution is claimed.
