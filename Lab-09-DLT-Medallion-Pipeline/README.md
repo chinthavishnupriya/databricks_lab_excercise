@@ -1,53 +1,47 @@
-# Lab 09 — Declarative Pipeline Development with Delta Live Tables (DLT)
+# Databricks Lab 9 — Declarative Medallion Pipeline with Delta Live Tables
+
+## Overview
+Completed DLT lab implementing a managed Medallion pipeline with Bronze ingestion, Silver cleansing, Gold aggregation, and data-quality expectations.
 
 ## Objective
+- Define a Bronze DLT streaming table with Auto Loader.
+- Define a Silver DLT table with expectations.
+- Create the Gold analytical output.
+- Verify the dependency graph and pipeline run.
 
-Construct an automated Medallion pipeline using Delta Live Tables (DLT) with PySpark decorators and data quality expectations.
+## Architecture
+Landing JSON → dlt_bronze_orders → dlt_silver_orders → dlt_gold_daily_sales.
 
-## Pipeline
+## Bronze
+Auto Loader reads JSON files from /Volumes/workspace/lab_db/lab6_landing/orders/.
 
-```text
-dlt_bronze_orders
-        ↓
-dlt_silver_orders
-        ↓
-dlt_gold_daily_sales
-```
+The guide uses /tmp/lab_landing/orders/, but the Free Edition environment used the Unity Catalog Volume path because of the storage restrictions encountered earlier.
 
-### Bronze
-Uses Auto Loader to ingest JSON order files from the Unity Catalog Volume:
+## Silver
+The Silver stage:
+- Casts amount to double.
+- Converts order_timestamp to timestamp.
+- Removes duplicate order_id values.
+- Applies valid_amount with dlt.expect_or_drop.
+- Applies valid_customer with dlt.expect_or_drop.
 
-`/Volumes/workspace/lab_db/lab6_landing/orders/`
+## Gold
+The supplied implementation uses @dlt.view and aggregates amount_num by customer_id into total_spent.
 
-### Silver
-Cleanses the Bronze stream by:
-- Converting `amount` to `double`
-- Converting `order_timestamp` to timestamp
-- Removing duplicate `order_id` values
-- Applying `valid_amount` with `@dlt.expect_or_drop`
-- Applying `valid_customer` with `@dlt.expect_or_drop`
-
-### Gold
-Creates `dlt_gold_daily_sales` as a DLT view that aggregates `amount_num` by `customer_id` and exposes the result as `total_spent`.
-
-## Execution Results
-
-- Bronze records written: **501**
-- Silver records written: **501**
-- `valid_amount`: **0% failures, 0 failed records**
-- `valid_customer`: **0% failures, 0 failed records**
-- Gold view: **created successfully**
-- Pipeline DAG: **successfully generated**
-- Pipeline run: **successful**
-
-## Environment Note
-
-The practice guide uses `/tmp/lab_landing/orders/` for the Bronze source. In this Databricks Free Edition workspace, the lab used the Unity Catalog Volume path from the previous Auto Loader lab:
-
-`/Volumes/workspace/lab_db/lab6_landing/orders/`
-
-The guide describes the Gold step as a materialized view, while the supplied PySpark example uses `@dlt.view`. This implementation follows the supplied example and therefore creates `dlt_gold_daily_sales` as a DLT view.
+## Results
+- Bronze records: 501
+- Silver records: 501
+- valid_amount failures: 0
+- valid_customer failures: 0
+- Gold view: created successfully
+- Pipeline DAG: generated successfully
+- Pipeline run: successful
 
 ## Evidence
+Screenshots document settings, Bronze/Silver code, Silver/Gold code, successful execution, DAG, expectations, and final tables.
 
-See the `screenshots/` folder for configuration, code, execution, DAG, expectation, and final table evidence.
+## Source Alignment
+The guide describes the Gold step as a materialized view while its supplied PySpark example uses @dlt.view. This repository follows the supplied implementation and therefore documents a DLT view.
+
+## Learning Outcome
+Lab 9 shows how the earlier individual transformations can be combined into a declarative managed pipeline with dependencies and built-in quality checks.
