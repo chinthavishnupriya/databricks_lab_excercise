@@ -1,33 +1,33 @@
-# Lab 3 — Delta Lake ACID, Schema Enforcement & Schema Evolution
+# Databricks Lab 3 — Delta Lake ACID, Schema Enforcement & Schema Evolution
+
+## Overview
+Completed Delta Lake lab covering transaction history, schema enforcement, and controlled schema evolution.
 
 ## Objective
-Inspect Delta Lake transaction history, demonstrate schema enforcement, and perform controlled
-schema evolution using PySpark `mergeSchema`.
+- Inspect Delta transaction history.
+- Demonstrate schema enforcement.
+- Perform schema evolution with mergeSchema.
+- Verify the evolved schema and data.
 
-## Databricks Environment
-- Catalog/Database: `lab_db`
-- Target table: `lab_db.customers`
-- Table format: Delta
+## Environment
+- Databricks Free Edition
+- Serverless compute
+- Table: lab_db.customers
+- Format: Delta
 
-## Guide-based tasks
-1. Inspect Delta transaction history.
-2. Attempt an incompatible write to demonstrate schema enforcement.
-3. Enable schema evolution with `mergeSchema = true`.
-4. Verify the evolved schema and data.
+## Execution Flow
+Inspect history → attempt incompatible write → observe schema enforcement → enable mergeSchema → write evolved data → verify schema and records.
 
-## Final Result
-The `customers` table contains:
-- `customer_id INT`
-- `name STRING`
-- `email STRING`
-- `signup_date DATE`
-- `status STRING`
-- `membership_tier STRING`
+## Final Schema
+customer_id INT, name STRING, email STRING, signup_date DATE, status STRING, membership_tier STRING.
 
-The evolved row is:
-- Customer 103 — Charlie Brown — Tier-1
+The evolved record was customer 103, Charlie Brown, with membership_tier Tier-1.
 
-## Notes
-The screenshots document the actual Databricks execution. An attempted direct access to
-`/_delta_log` through DBFS produced a DBFS-disabled error in the Free/Serverless environment;
-this is recorded as an environment limitation rather than treated as a failed Delta operation.
+## Environment Limitation
+Direct access to the Delta _delta_log through DBFS produced a DBFS-disabled error in the Free/Serverless environment. This was recorded as an environment limitation; the Delta table operations themselves completed successfully.
+
+## Evidence
+The query, output, and screenshots folders preserve the execution and verification results.
+
+## Learning Outcome
+This lab shows how Delta tables provide versioned data management together with schema controls and controlled evolution.
